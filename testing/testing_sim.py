@@ -1,5 +1,6 @@
 import sys
 
+
 class DefineTests:
     def __init__(self):
         self._testing_simavr = TestingSimAvr()
@@ -17,7 +18,7 @@ class DefineTests:
 class TestingSimAvr:
     def __init__(self):
         pass
-    
+
     def process_stdout(self, stdout):
         error_counter = 0
         for line in stdout:
@@ -39,5 +40,3 @@ class TestingSimAvr:
         if int(value_assert[0]) == int(value_assert[1]):
             return True
         return False
-
-
