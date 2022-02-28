@@ -37,3 +37,7 @@ jobs:
         run: |
           cd src
           avr-gcc -Os -g -o water_level.elf water_level.c -mmcu=atmega328p
+
+      - name: Test application
+        run: |
+          python3 testing/main.py --file=src/water_level.elf --commands=testing/commands

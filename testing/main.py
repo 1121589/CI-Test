@@ -6,9 +6,11 @@ import argparse
 import subprocess
 import os
 import signal
+import sys
 
 from testing_sim import DefineTests
 
+SRC_PATH = "src/"
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -18,14 +20,15 @@ def parse_args():
 
 def main_run(args):
     define_tests = DefineTests()
-    simavr_call = subprocess.Popen("simavr -g -m atmega328p water_level.elf", shell=True, stdout=subprocess.PIPE, preexec_fn=os.setsid)
+    simavr_call = subprocess.Popen(f"simavr -g -m atmega328p {SRC_PATH}water_level.elf", shell=True, stdout=subprocess.PIPE, preexec_fn=os.setsid)
 
     command_process = subprocess.Popen(f"avr-gdb --quiet --batch -x {args.commands} {args.file}", shell=True, stdout=subprocess.PIPE)
     process_stdout = command_process.stdout
-    define_tests.first_test(process_stdout)
-        
+    return_value = define_tests.first_test(process_stdout)
+    print(return_value)
     os.killpg(os.getpgid(simavr_call.pid), signal.SIGTERM)
-
+    sys.exit(return_value)
+        
 
 if __name__ == "__main__":
     args = parse_args()
