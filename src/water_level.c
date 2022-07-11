@@ -15,7 +15,7 @@ void init_ports_mcu()
 	DDRB = 0b00000010; // Configures PB1 as output rest as input
 }
 
-void button_logic(){
+void water_level(){
 	if (PINB & (1<<BUTTON1)){
 		PORTB |= (1<<LED1);
 	}
@@ -28,7 +28,7 @@ int main (void)
 {
 	init_ports_mcu();
 	while (1){	
-		button_logic();
+		water_level();
 	}
 	return (0); 
 }

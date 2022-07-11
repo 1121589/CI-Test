@@ -1,6 +1,6 @@
-file src/water_level.elf
+file bazel-bin/src/water_level.elf
 target remote:1234
-break button_logic
+break water_level
 c 100
 set PINB=1
 c 100
