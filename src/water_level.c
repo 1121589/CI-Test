@@ -17,7 +17,7 @@ void init_ports_mcu()
 }
 
 void water_level(){
-	if (PINB & (1<<BUTTON1)){
+	if (PINB & (1<<WATER_LEVEL)){
 		PORTB |= (1<<LED1);
 	}
 	else{

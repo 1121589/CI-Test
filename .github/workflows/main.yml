@@ -23,21 +23,30 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Set up avr-gcc and simavr
+
+      - name: Docker login github
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_DOCKER_TOKEN }}
+
+      - name: Docker pull
         run: |
-          sudo apt-get update -y
-          sudo apt-get install gcc make -y
-          sudo apt-get install gcc-avr avr-libc -y
-          sudo apt-get install libelf-dev -y
-          sudo apt install simavr -y
+          docker pull ghcr.io/1121589/ci-test:latest
           
       - name: Build application
         run: |
-          cd src
-          avr-gcc -Os -g -o water_level.elf water_level.c -mmcu=atmega328p
+          docker run \
+          --rm \
+          -v ${PWD}:/usr/src \
+          ghcr.io/1121589/ci-test \
+          /bin/bash -c \
+          'cd /usr/src && bazel build --linkopt="-mmcu=atmega328p" --linkopt="-Os" --linkopt="-g" --copt="-mmcu=atmega328p" --copt="-Os" --copt="-g" --strip=never --subcommands --config=avr_config //src:water_level.elf'
 
       - name: Test application
         run: |
-          python3 testing/main.py --file=src/water_level.elf --commands=testing/commands
+          exit 0
+          docker run --rm -v ${PWD}:/usr/src ghcr.io/1121589/ci-test python3 testing/main.py --file=src/water_level.elf --commands=testing/commands
