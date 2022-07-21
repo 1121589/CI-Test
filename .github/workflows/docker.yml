@@ -1,0 +1,30 @@
+name: Docker Publish
+
+on: 
+  push:
+    paths:
+      - docker/*
+      - .github/workflows/docker.yml
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Docker login github
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_DOCKER_TOKEN }}
+
+      - name: Docker build
+        run: |
+          docker build ./docker --tag ghcr.io/1121589/ci-test:latest
+        
+      - name: Docker push
+        run: |
+          docker push ghcr.io/1121589/ci-test:latest

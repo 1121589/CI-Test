@@ -1,4 +1,6 @@
-//avr-gcc -Os -g -o water_level.elf water_level.c -mmcu=atmega328p
+/*
+avr-gcc -Os -g -o water_level.elf water_level.c -mmcu=atmega328p
+*/
 
 #ifndef F_CPU
 #define F_CPU 16000000UL // telling controller crystal frequency (16 MHz AVR ATMega328P)
@@ -6,9 +8,8 @@
 
 #include <avr/io.h> // Defines pins, ports, etc.
 
-#define BUTTON1 0 // button switch connected to port B pin 0
-
-#define LED1 1 // Led1 connected to port B pin 0
+#define WATER_LEVEL 0 // Water level sensor PINB0
+#define LED1 1 // Led/Valve/Whatever connected to PORTB1
 
 void init_ports_mcu()
 {
