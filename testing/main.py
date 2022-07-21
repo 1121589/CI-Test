@@ -10,7 +10,7 @@ import sys
 
 from testing_sim import DefineTests
 
-SRC_PATH = "src/"
+#SRC_PATH = "src/"
 
 
 def parse_args():
