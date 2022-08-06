@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     libelf-dev \
     simavr
 
-RUN apt-get install -y python3.9 python3.9-dev
+RUN apt-get install -y python3
 
 # Bazelisk
 RUN wget https://github.com/bazelbuild/bazelisk/releases/download/v1.12.0/bazelisk-linux-amd64 -O /usr/bin/bazel \
