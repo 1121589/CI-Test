@@ -17,6 +17,12 @@ RUN apt-get update && apt-get install -y \
     libelf-dev \
     simavr
 
+RUN apt-get install -y python3.9 python3.9-dev
+
 # Bazelisk
 RUN wget https://github.com/bazelbuild/bazelisk/releases/download/v1.12.0/bazelisk-linux-amd64 -O /usr/bin/bazel \
 && chmod +x /usr/bin/bazel
+
+# Forçar Bazelisk a dar cache de algumas versões
+RUN export USE_BAZEL_VERSION=5.1.1 && bazel --version
+RUN export USE_BAZEL_VERSION=latest && bazel --version

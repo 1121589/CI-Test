@@ -32,14 +32,8 @@ jobs:
           
       - name: Build application
         run: |
-          docker run \
-          --rm \
-          -v ${PWD}:/usr/src \
-          ghcr.io/1121589/ci-test \
-          /bin/bash -c \
-          'cd /usr/src && bazel build --linkopt="-mmcu=atmega328p" --linkopt="-Os" --linkopt="-g" --copt="-mmcu=atmega328p" --copt="-Os" --copt="-g" --strip=never --subcommands --config=avr_config //src:water_level.elf'
+          bazel build --linkopt="-mmcu=atmega328p" --linkopt="-Os" --linkopt="-g" --copt="-mmcu=atmega328p" --copt="-Os" --copt="-g" --strip=never --subcommands --config=avr_config //applications/app1/src:water_level.elf
 
       - name: Test application
         run: |
-          exit 0
-          docker run --rm -v ${PWD}:/usr/src ghcr.io/1121589/ci-test python3 testing/main.py --file=src/water_level.elf --commands=testing/commands
+          python3 testing/main.py --file=applications/app1/src:water_level.elf --commands=applications/app1/testing/commands
