@@ -10,10 +10,10 @@ py_test(
     name = "main",
     srcs = ["main.py"],
     args = [
-        "--file=bazel-bin/applications/app1/water_level.elf", 
-        "--commands=applications/app1/testing/commands.gdb",
+        "--file=water_level.elf", 
+        "--commands=commands.gdb",
     ],
-    data = glob(["applications/**/*.gdb"]),
+    data = glob(["applications/app1/**"]),
     deps = [
         ":testing_sim",
     ],

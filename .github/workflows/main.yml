@@ -32,8 +32,8 @@ jobs:
           
       - name: Build application
         run: |
-          bazel build --linkopt="-mmcu=atmega328p" --linkopt="-Os" --linkopt="-g" --copt="-mmcu=atmega328p" --copt="-Os" --copt="-g" --strip=never --subcommands --config=avr_config //applications/app1/src:water_level.elf
+          bazel build --config=avr_config //applications/...
 
       - name: Test application
         run: |
-          python3 testing/main.py --file=applications/app1/src:water_level.elf --commands=applications/app1/testing/commands
+          bazel test --config=avr_config //applications/...

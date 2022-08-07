@@ -7,7 +7,6 @@ import subprocess
 import os
 import signal
 import sys
-import glob
 
 from testing_sim import DefineTests
 
@@ -18,20 +17,24 @@ def parse_args():
     parser.add_argument("--commands", help="commands file", required=True)
     return parser.parse_args()
 
+def find(name, path):
+    for root, _, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
 
 def main_run(args):
     define_tests = DefineTests()
-    print("pwd = ",os.getcwd())
-    files = glob.glob("/home/ricardo/**/*.elf", recursive = True)
-    print("$$$$$",files)
-    simavr_command = f"simavr -g -m atmega328p {args.file}"
+    binary = find(args.file, "/")
+    gdb = find(args.commands, "/")
+
+    simavr_command = f"simavr -g -m atmega328p {binary}"
     simavr_call = subprocess.Popen(  # Starts simavr
         simavr_command,
         shell=True,
         stdout=subprocess.PIPE,
         preexec_fn=os.setsid,
     )
-    command = f"avr-gdb --batch -x {args.commands} {args.file}"
+    command = f"avr-gdb --batch -x {gdb} {binary}"
     command_process = subprocess.Popen(
         command,
         shell=True,
