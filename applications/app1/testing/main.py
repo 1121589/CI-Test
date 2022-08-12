@@ -10,8 +10,6 @@ import sys
 
 from testing_sim import DefineTests
 
-#SRC_PATH = "src/"
-
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -19,29 +17,34 @@ def parse_args():
     parser.add_argument("--commands", help="commands file", required=True)
     return parser.parse_args()
 
+def find(name, path):
+    for root, _, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
 
 def main_run(args):
     define_tests = DefineTests()
+    binary = find(args.file, "/")
+    gdb = find(args.commands, "/")
 
+    simavr_command = f"simavr -g -m atmega328p {binary}"
     simavr_call = subprocess.Popen(  # Starts simavr
-        f"simavr -g -m atmega328p {SRC_PATH}water_level.elf",
+        simavr_command,
         shell=True,
         stdout=subprocess.PIPE,
         preexec_fn=os.setsid,
     )
-
+    command = f"avr-gdb --batch -x {gdb} {binary}"
     command_process = subprocess.Popen(
-        f"avr-gdb --quiet --batch -x {args.commands} {args.file}",
+        command,
         shell=True,
         stdout=subprocess.PIPE,
     )
     process_stdout = command_process.stdout
     return_value = define_tests.first_test(process_stdout)
 
-    print(return_value)
-
     os.killpg(os.getpgid(simavr_call.pid), signal.SIGTERM)  # Kills simavr
-    sys.exit(return_value) # if !=0 will fail
+    sys.exit(return_value)  # if !=0 will fail
 
 
 if __name__ == "__main__":
