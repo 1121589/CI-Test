@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y \
     gcc-avr \
     avr-libc \
     libelf-dev \
-    simavr
+    simavr \
+    libc++1
 
 RUN apt-get install -y python3
 
