@@ -5,7 +5,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Update
 RUN apt update && apt install -y \
-    apt-utils
+    apt-utils \
+    build-essential
 
 # gcc, avr, etc
 RUN apt-get update && apt-get install -y \
@@ -15,8 +16,7 @@ RUN apt-get update && apt-get install -y \
     gcc-avr \
     avr-libc \
     libelf-dev \
-    simavr \
-    libc++1
+    simavr
 
 RUN apt-get install -y python3
 
