@@ -8,7 +8,7 @@ avr-gcc -Os -g -o water_level.elf water_level.c -mmcu=atmega328p
 
 #include <avr/io.h> // Defines pins, ports, etc.
 
-#define WATER_LEVEL 0 // Water level sensor PINB0
+#define WATER_LEVEL 2 // Water level sensor PINB0
 #define LED1 1 // Led/Valve/Whatever connected to PORTB1
 
 void init_ports_mcu() {
