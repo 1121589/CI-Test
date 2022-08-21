@@ -6,12 +6,22 @@ class DefineTests:
         self._testing_simavr = TestingSimAvr()
         self._error_counter = 0
 
-    def first_test(self, stdout):
+    def _verify_errors(self):
+        if self._error_counter > 0:
+            return self._error_counter
+        return self._error_counter
+
+    def run_tests(self, stdout):
+        self._first_test(stdout)
+
+        return self._verify_errors()
+
+    def _first_test(self, stdout):
         if self._testing_simavr.process_stdout(stdout):
-            print("pass")
+            print("First test passed")
             return 0
         self._error_counter += 1
-        print("it did not pass")
+        print("First test not passed")
         return self._error_counter
 
 
