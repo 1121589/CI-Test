@@ -7,8 +7,6 @@ class DefineTests:
         self._error_counter = 0
 
     def _verify_errors(self):
-        if self._error_counter > 0:
-            return self._error_counter
         return self._error_counter
 
     def run_tests(self, stdout):
