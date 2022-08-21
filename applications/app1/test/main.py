@@ -41,7 +41,7 @@ def main_run(args):
         stdout=subprocess.PIPE,
     )
     process_stdout = command_process.stdout
-    return_value = define_tests.first_test(process_stdout)
+    return_value = define_tests.run_tests(process_stdout)
 
     os.killpg(os.getpgid(simavr_call.pid), signal.SIGTERM)  # Kills simavr
     sys.exit(return_value)  # if !=0 will fail

@@ -6,6 +6,5 @@ cc_library(
         "src/even_number.c",
         "src/even_number.h",
     ],
-    #hdrs = ["src/even_number.h"],
     visibility = ["//applications/app2:__subpackages__"],
 )
