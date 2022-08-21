@@ -1,4 +1,4 @@
-# CI System for Atmega
+# CI System for Atmega #
 This repository serves as a testing ground for the implementation of a Uni project based on a Continuous Integration for AVR systems.
 
 # Architecture
