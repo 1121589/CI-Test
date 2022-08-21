@@ -1,14 +1,9 @@
-import sys
-
-
 class DefineTests:
     def __init__(self):
         self._testing_simavr = TestingSimAvr()
         self._error_counter = 0
 
     def _verify_errors(self):
-        if self._error_counter > 0:
-            return self._error_counter
         return self._error_counter
 
     def run_tests(self, stdout):
@@ -17,7 +12,7 @@ class DefineTests:
         return self._verify_errors()
 
     def _first_test(self, stdout):
-        if self._testing_simavr.process_stdout(stdout):
+        if self._testing_simavr.process_stdout(stdout, "Assert"):
             print("First test passed")
             return 0
         self._error_counter += 1
@@ -26,19 +21,14 @@ class DefineTests:
 
 
 class TestingSimAvr:
-    def __init__(self):
-        pass
-
-    def process_stdout(self, stdout):
+    def process_stdout(self, stdout, key: str):
         error_counter = 0
         for line in stdout:
-            if "Assert" in line.decode("utf-8"):
-                value_assert_list = self._split_string(line.decode("utf-8"))
-                if not self._assert_equal(value_assert_list):
+            if key in line.decode("utf-8"):
+                value_1, value_2 = self._split_string(line.decode("utf-8"))
+                if not self._assert_equal(value_1, value_2):
                     error_counter += 1
-        if error_counter > 0:
-            return False
-        return True
+        return self.return_error_counter(error_counter)
 
     def _split_string(self, line):
         value_assert = []
@@ -46,7 +36,13 @@ class TestingSimAvr:
             value_assert.append(i.split("=")[-1])
         return value_assert
 
-    def _assert_equal(self, value_assert):
-        if int(value_assert[0]) == int(value_assert[1]):
+    def _assert_equal(self, value_1: int, value_2: int):
+        if int(value_1) == int(value_2):
             return True
         return False
+
+    @staticmethod
+    def return_error_counter(error_counter):
+        if error_counter > 0:
+            return False
+        return True

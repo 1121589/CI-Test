@@ -17,10 +17,12 @@ def parse_args():
     parser.add_argument("--commands", help="commands file", required=True)
     return parser.parse_args()
 
+
 def find(name, path):
     for root, _, files in os.walk(path):
         if name in files:
             return os.path.join(root, name)
+
 
 def main_run(args):
     define_tests = DefineTests()
